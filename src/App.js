@@ -1,21 +1,17 @@
 import React, { useState } from "react";
 import "./App.css";
 import { useSelector, useDispatch } from "react-redux";
-import { addUser, deleteUser } from "./features/UsersReducers";
+import { addUser, deleteUser, updateUser } from "./features/UsersReducers";
 
 function App() {
   const userList = useSelector((state) => state.users.value);
   const dispatch = useDispatch();
   console.log(userList[4].id);
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefualt();
-  //   setName("");
-  //   setUserName("");
-  // };
-
   const [name, setName] = useState("");
   const [userName, setUserName] = useState("");
+  const [newUserName, setNewUserName] = useState("");
+
   const randomId = new Date();
   console.log(randomId);
 
@@ -54,8 +50,16 @@ function App() {
             <div key={user.id}>
               <h2>{user.name}</h2>
               <h2>{user.username}</h2>
-              <input type="text" placeholder="edit username..." />
-              <button>Edit Username</button>
+              <input
+                type="text"
+                placeholder="edit username..."
+                onChange={(e) => setNewUserName(e.target.value)}
+              />
+              <button
+                onClick={() => dispatch(updateUser({ username: newUserName }))}
+              >
+                Edit Username
+              </button>
               <button onClick={() => dispatch(deleteUser({ id: user.id }))}>
                 Delete User
               </button>
