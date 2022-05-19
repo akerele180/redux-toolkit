@@ -13,9 +13,12 @@ export const userSlice = createSlice({
     deleteUser: (state, action) => {
       state.value = state.value.filter((user) => user.id !== action.payload.id);
     },
+    updateUser: (state, action) => {
+      
+    }
   },
 });
 
 // the reducerslice must be exported so that it can be used in the global store
-export const { addUser, deleteUser } = userSlice.actions;
+export const { addUser, deleteUser, updateUser } = userSlice.actions;
 export default userSlice.reducer;
