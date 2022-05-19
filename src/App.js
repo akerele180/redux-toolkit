@@ -1,23 +1,68 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import { useSelector, useDispatch } from "react-redux";
+import { addUser, deleteUser } from "./features/UsersReducers";
 
 function App() {
+  const userList = useSelector((state) => state.users.value);
+  const dispatch = useDispatch();
+  console.log(userList[4].id);
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefualt();
+  //   setName("");
+  //   setUserName("");
+  // };
+
+  const [name, setName] = useState("");
+  const [userName, setUserName] = useState("");
+  const randomId = new Date();
+  console.log(randomId);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+      <form className="addUser" onSubmit={(e) => e.preventDefault()}>
+        <input
+          type="text"
+          placeholder="Name..."
+          onChange={(e) => setName(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="username..."
+          onChange={(e) => setUserName(e.target.value)}
+        />
+        <button
+          className="btn"
+          type="submit"
+          onClick={() => {
+            dispatch(
+              addUser({
+                id: userList[userList.length - 1].id + 1,
+                name: name,
+                username: userName,
+              })
+            );
+          }}
         >
-          Learn React
-        </a>
-      </header>
+          Add User
+        </button>
+      </form>
+      <div className="displayUsers">
+        {userList.map((user) => {
+          return (
+            <div key={user.id}>
+              <h2>{user.name}</h2>
+              <h2>{user.username}</h2>
+              <input type="text" placeholder="edit username..." />
+              <button>Edit Username</button>
+              <button onClick={() => dispatch(deleteUser({ id: user.id }))}>
+                Delete User
+              </button>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
